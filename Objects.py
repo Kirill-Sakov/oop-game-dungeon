@@ -66,9 +66,18 @@ class Hero(Creature):
             self.hp = self.max_hp
 
 
+class Enemy(Creature, Interactive):
+    def __init__(self, icon, stats, xp, position):
+        super().__init__(icon, stats, position)
+
+    def interact(self, engine, hero):
+        pass
+
+
 class Effect(Hero):
 
-    def __init__(self, base):
+    def __init__(self, base, stats, icon):
+        super().__init__(stats, icon)
         self.base = base
         self.stats = self.base.stats.copy()
         self.apply_effect()
@@ -130,5 +139,16 @@ class Effect(Hero):
         pass
 
 
-# FIXME
-# add classes
+class Berserk(Effect):
+    def apply_effect(self):
+        pass
+
+
+class Blessing(Effect):
+    def apply_effect(self):
+        pass
+
+
+class Weakness(Effect):
+    def apply_effect(self):
+        pass
