@@ -35,9 +35,12 @@ class ScreenHandle(pygame.Surface):
 
 class GameSurface(ScreenHandle):
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.game_engine = None
+
     def connect_engine(self, engine):
-        # FIXME save engine and send it to next in chain
-        pass
+        self.game_engine = engine
 
     def draw_hero(self):
         self.game_engine.hero.draw(self)

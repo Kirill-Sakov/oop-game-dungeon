@@ -1,7 +1,7 @@
 import pygame
 import os
 import Objects
-import ScreenEngine
+from ScreenEngine import GameSurface, ProgressBar, InfoWindow, HelpWindow, ScreenHandle
 import Logic
 import Service
 
@@ -27,25 +27,22 @@ base_stats = {
 
 def create_game(sprite_size, is_new):
     global hero, engine, drawer, iteration
+    path = os.path.join("texture", "Hero.png")
+    sprite = Service.create_sprite(path, sprite_size)
     if is_new:
-        hero = Objects.Hero(base_stats, Service.create_sprite(
-            os.path.join("texture", "Hero.png"), sprite_size))
+        hero = Objects.Hero(base_stats, sprite)
         engine = Logic.GameEngine()
         Service.service_init(sprite_size)
         Service.reload_game(engine, hero)
-        with ScreenEngine as SE:
-            drawer = SE.GameSurface((640, 480), pygame.SRCALPHA, (0, 480),
-                                    SE.ProgressBar((640, 120), (640, 0),
-                                                   SE.InfoWindow((160, 600), (50, 50),
-                                                                 SE.HelpWindow((700, 500), pygame.SRCALPHA, (0, 0),
-                                                                               SE.ScreenHandle(
-                                                                                   (0, 0))
-                                                                               ))))
+        handle = ScreenHandle((0, 0))
+        help_window = HelpWindow((700, 500), pygame.SRCALPHA, (0, 0), handle)
+        info_window = InfoWindow((160, 600), (50, 50), help_window)
+        progress_bar = ProgressBar((640, 120), (640, 0), info_window)
+        drawer = GameSurface((640, 480), pygame.SRCALPHA, (0, 480), progress_bar)
 
     else:
         engine.sprite_size = sprite_size
-        hero.sprite = Service.create_sprite(
-            os.path.join("texture", "Hero.png"), sprite_size)
+        hero.sprite = sprite
         Service.service_init(sprite_size, False)
 
     Logic.GameEngine.sprite_size = sprite_size

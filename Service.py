@@ -74,20 +74,29 @@ def add_gold(engine, hero):
 
 class MapFactory(yaml.YAMLObject):
 
+    class Map:
+        def __init__(self):
+            self.Map = []
+
+        def get_map(self):
+            return self.Map
+
+    class Objects:
+        def __init__(self):
+            self.objects = []
+
+        def get_objects(self, _map):
+            return self.objects
+
     @classmethod
     def from_yaml(cls, loader, node):
-
-        # FIXME
-        # get _map and _obj
-
-        return {'map': _map, 'obj': _obj}
+        return {'map': cls.Map(), 'obj': cls.Objects()}
 
 
 class EndMap(MapFactory):
-
     yaml_tag = "!end_map"
 
-    class Map:
+    class Map(MapFactory.Map):
         def __init__(self):
             self.Map = ['000000000000000000000000000000000000000',
                         '0                                     0',
@@ -99,28 +108,17 @@ class EndMap(MapFactory):
                         '0  0   0   000   0   0  00000  00000  0',
                         '0                                   0 0',
                         '0                                     0',
-                        '000000000000000000000000000000000000000'
-                        ]
+                        '000000000000000000000000000000000000000']
             self.Map = list(map(list, self.Map))
             for i in self.Map:
                 for j in range(len(i)):
                     i[j] = wall if i[j] == '0' else floor1
-         
-        def get_map(self):
-            return self.Map
-
-    class Objects:
-        def __init__(self):
-            self.objects = []
-
-        def get_objects(self, _map):
-            return self.objects
 
 
 class RandomMap(MapFactory):
     yaml_tag = "!random_map"
 
-    class Map:
+    class Map(MapFactory.Map):
 
         def __init__(self):
             self.Map = [[0 for _ in range(41)] for _ in range(41)]
@@ -132,13 +130,7 @@ class RandomMap(MapFactory):
                         self.Map[j][i] = [wall, floor1, floor2, floor3, floor1,
                                           floor2, floor3, floor1, floor2][random.randint(0, 8)]
 
-        def get_map(self):
-            return self.Map
-
-    class Objects:
-
-        def __init__(self):
-            self.objects = []
+    class Objects(MapFactory.Objects):
 
         def get_objects(self, _map):
 
@@ -209,6 +201,25 @@ class RandomMap(MapFactory):
 
 # FIXME
 # add classes for YAML !empty_map and !special_map{}
+class EmptyMap(MapFactory):
+    yaml_tag = '!empty_map'
+
+    class Map(MapFactory.Map):
+        pass
+
+    class Objects(MapFactory.Objects):
+        pass
+
+
+class SpecialMap(MapFactory):
+    yaml_tag = '!special_map'
+
+    class Map(MapFactory.Map):
+        pass
+
+    class Objects(MapFactory.Objects):
+        pass
+
 
 wall = [0]
 floor1 = [0]
