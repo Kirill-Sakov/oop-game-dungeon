@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
+
 import pygame
-import random
 
 
 def create_sprite(img, sprite_size):
@@ -12,8 +12,21 @@ def create_sprite(img, sprite_size):
 
 
 class AbstractObject(ABC):
+
+    def __init__(self, icon, position):
+        self.sprite = icon
+        self.position = position
+
     def draw(self, display):
-        pass
+        display.blit(self.sprite, self.position)
+
+    @property
+    def pos_x(self):
+        return self.position[0]
+
+    @property
+    def pos_y(self):
+        return self.position[1]
 
 
 class Interactive(ABC):
@@ -26,9 +39,8 @@ class Interactive(ABC):
 class Ally(AbstractObject, Interactive):
 
     def __init__(self, icon, action, position):
-        self.sprite = icon
+        super().__init__(icon, position)
         self.action = action
-        self.position = position
 
     def interact(self, engine, hero):
         self.action(engine, hero)
@@ -37,9 +49,8 @@ class Ally(AbstractObject, Interactive):
 class Creature(AbstractObject):
 
     def __init__(self, icon, stats, position):
-        self.sprite = icon
+        super().__init__(icon, position)
         self.stats = stats
-        self.position = position
         self.calc_max_HP()
         self.hp = self.max_hp
 

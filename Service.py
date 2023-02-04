@@ -21,7 +21,7 @@ def reload_game(engine, hero):
     global level_list
     level_list_max = len(level_list) - 1
     engine.level += 1
-    hero.position = [1, 1]
+    hero.position = [20, 20]
     engine.objects = []
     generator = level_list[min(engine.level, level_list_max)]
     _map = generator['map'].get_map()
@@ -75,8 +75,21 @@ def add_gold(engine, hero):
 class MapFactory(yaml.YAMLObject):
 
     class Map:
+        MAP_SIZE = 41
+
         def __init__(self):
-            self.Map = []
+            self.Map = self.default_map()
+
+        def default_map(self):
+            """Карта по умолчанию"""
+            # клетка 40 на 40
+            default = [[0 for _ in range(self.MAP_SIZE)] for _ in range(self.MAP_SIZE)]
+            # По краям - стены
+            for i in range(self.MAP_SIZE):
+                for j in range(self.MAP_SIZE):
+                    if i == 0 or j == 0 or i == 40 or j == 40:
+                        default[j][i] = wall
+            return default
 
         def get_map(self):
             return self.Map
@@ -121,14 +134,12 @@ class RandomMap(MapFactory):
     class Map(MapFactory.Map):
 
         def __init__(self):
-            self.Map = [[0 for _ in range(41)] for _ in range(41)]
-            for i in range(41):
-                for j in range(41):
-                    if i == 0 or j == 0 or i == 40 or j == 40:
-                        self.Map[j][i] = wall
-                    else:
-                        self.Map[j][i] = [wall, floor1, floor2, floor3, floor1,
-                                          floor2, floor3, floor1, floor2][random.randint(0, 8)]
+            super().__init__()
+            for i in range(self.MAP_SIZE):
+                for j in range(self.MAP_SIZE):
+                    if not (i == 0 or j == 0 or i == 40 or j == 40):
+                        random_object = ALL_OBJECTS[random.randint(0, 8)]
+                        self.Map[j][i] = random_object
 
     class Objects(MapFactory.Objects):
 
@@ -215,7 +226,13 @@ class SpecialMap(MapFactory):
     yaml_tag = '!special_map'
 
     class Map(MapFactory.Map):
-        pass
+        def __init__(self):
+            super().__init__()
+            for i in range(self.MAP_SIZE):
+                for j in range(self.MAP_SIZE):
+                    obj = self.Map[i][j]
+                    if obj == 0:
+                        self.Map[i][j] = random.choice(FLOOR)
 
     class Objects(MapFactory.Objects):
         pass
@@ -279,3 +296,7 @@ def service_init(sprite_size, full=True):
         level_list = yaml.load(file.read())['levels']
         level_list.append({'map': EndMap.Map(), 'obj': EndMap.Objects()})
         file.close()
+
+
+ALL_OBJECTS = [wall, floor1, floor2, floor3, floor1, floor2, floor3, floor1, floor2]
+FLOOR = [floor1, floor2, floor3]

@@ -6,7 +6,8 @@ import Logic
 import Service
 
 
-SCREEN_DIM = (800, 600)
+SCREEN_DIM = (820, 820)
+SPRITE_SIZE = 20
 
 pygame.init()
 gameDisplay = pygame.display.set_mode(SCREEN_DIM)
@@ -32,13 +33,13 @@ def create_game(sprite_size, is_new):
     if is_new:
         hero = Objects.Hero(base_stats, sprite)
         engine = Logic.GameEngine()
+        engine.step = sprite_size
         Service.service_init(sprite_size)
         Service.reload_game(engine, hero)
-        handle = ScreenHandle((0, 0))
-        help_window = HelpWindow((700, 500), pygame.SRCALPHA, (0, 0), handle)
+        help_window = HelpWindow((700, 500), pygame.SRCALPHA, (0, 0), ScreenHandle((0, 0)))
         info_window = InfoWindow((160, 600), (50, 50), help_window)
         progress_bar = ProgressBar((640, 120), (640, 0), info_window)
-        drawer = GameSurface((640, 480), pygame.SRCALPHA, (0, 480), progress_bar)
+        drawer = GameSurface(SCREEN_DIM, pygame.SRCALPHA, (0, 480), progress_bar)
 
     else:
         engine.sprite_size = sprite_size
@@ -52,8 +53,8 @@ def create_game(sprite_size, is_new):
     iteration = 0
 
 
-size = 60
-create_game(size, True)
+create_game(SPRITE_SIZE, True)
+
 
 while engine.working:
 
