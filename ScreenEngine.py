@@ -98,9 +98,9 @@ class ProgressBar(ScreenHandle):
         super().__init__(*args, **kwargs)
         self.fill(colors["wooden"])
 
-    def connect_engine(self, engine):
-        # FIXME save engine and send it to next in chain
-        pass
+    # def connect_engine(self, engine):
+    #     # FIXME save engine and send it to next in chain
+    #     pass
 
     def draw(self, canvas):
         self.fill(colors["wooden"])
@@ -180,10 +180,9 @@ class InfoWindow(ScreenHandle):
     # FIXME
     # draw next surface in chain
 
-    def connect_engine(self, engine):
-        # FIXME set this class as Observer to engine and send it to next in
-        #  chain
-        pass
+    # def connect_engine(self, engine):
+    #     # FIXME set this class as Observer to engine and send it to next in
+    #     #  chain
 
 
 class HelpWindow(ScreenHandle):
@@ -203,9 +202,9 @@ class HelpWindow(ScreenHandle):
         self.data.append([" R ", "Restart Game"])
     # FIXME You can add some help information
 
-    def connect_engine(self, engine):
-        # FIXME save engine and send it to next in chain
-        pass
+    # def connect_engine(self, engine):
+    #     # FIXME save engine and send it to next in chain
+    #     pass
 
     def draw(self, canvas):
         alpha = 0
