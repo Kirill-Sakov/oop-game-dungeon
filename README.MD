@@ -3,6 +3,7 @@ This is a special legacy project from Coursera teaching "Python OOP Patterns" th
 
 ## Step 1. Nothing to show.
 At first, nothing started. I fixed the syntax errors and voila - first run
+
 FIX  
 - window chain  
 - connect engine  
@@ -13,6 +14,7 @@ FIX
 ![First run](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZDRlODdlY2ZmMGVjM2I5NTFjZWM1YWNhNmQyNmY2MWYxODhkZDRkZCZjdD1n/Wo11WOBiylMSZaSW6o/giphy.gif)
 
 Nothing works. Buttons do not respond. Let's fix it!
+
 FIX
 - first start
 - drawing
