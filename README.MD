@@ -5,9 +5,9 @@ This is a special legacy project from Coursera teaching "Python OOP Patterns" th
 At first, nothing started. I fixed the syntax errors and voila - first run
 
 FIX  
-- window chain  
-- connect engine  
-- Map load
+- open window with pattern "chain of responsibility"
+- connect game engine  
+- map load
 
 ## Step 2. First run.
 
@@ -16,7 +16,7 @@ FIX
 Nothing works. Buttons do not respond. Let's fix it!
 
 FIX
-- first start
+- scale
 - drawing
 - movement logic
 
